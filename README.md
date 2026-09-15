@@ -1,126 +1,87 @@
-# vinext-starter
+# Henil & Vidhi — wedding invitation
 
-A clean full-stack starter running on [vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and Drizzle support.
+A local React + Vite project. Nothing has been deployed. The frontend is portable and includes the garden-villa entrance, a vintage car with gentle head movement, scroll-controlled opening doors, sky-blue Haldi styling, event details, directions, a four-photo lightbox gallery, music, and RSVP.
 
-## Prerequisites
+## Start locally
 
-- Node.js `>=22.13.0`
-- Portable: Windows, macOS, or Linux; no Bash required
-- Managed Linux: managed Linux runtime with Bash, `flock`, `curl`, `sha256sum`, and GNU `timeout`
-- Git is required only for publishing
-
-## Sites Lifecycle
-
-The Sites initializer copies the shared starter and selects managed-linux only when `SITES_MANAGED_LINUX_CONTAINER=1`; otherwise it selects portable. It saves the selection only in ignored `.sites-runtime/execution-profile.json`. Both profiles copy/configure first, then use the plugin's separate `install-dependencies.mjs` step to measure installation independently. Edit source under `app/` and follow the Sites skill for installation, preview, builds, and publishing.
-
-Whenever reopening or moving a checkout, run `node <plugin-root>/scripts/configure-execution-profile.mjs` before project commands. Profile changes do not alter tracked source or require reinstalling otherwise-valid dependencies; restart an existing preview to use the new selection. Do not commit or upload `.sites-runtime/`.
-
-This starter does not use `wrangler.jsonc`.
-
-`install:ci` runs `npm ci` once against the shared lockfile, disables parent-workspace discovery, and includes required dev/optional dependencies despite production/omit settings. Sharp defaults to prebuilt binaries unless explicitly configured otherwise. Do not overlap installers.
-
-- **Portable:** Preserve host HOME, npm cache, registry, proxy, temporary paths, retry/concurrency settings, and lifecycle-script policy. Use `--prefer-offline --no-audit --no-fund`.
-- **Managed Linux:** Use the existing project-local HOME/cache/tmp setup and Linux install lock, tarball preflight, and timeout. Restore the image-seeded npm cache only when its lockfile hash matches; retain network fallback. Builds keep their existing timeout. These helpers are not invoked by the portable profile.
-
-`scripts/sites-env.mjs` preserves the caller's HOME, npm cache, proxy, XDG, and temporary-directory configuration while defaulting Wrangler and Miniflare state to the checkout. If npm reports an unwritable cache, select a writable path with `npm_config_cache` for that install. The `dev` and `start` scripts also keep Wrangler logs inside the checkout. Generated `.sites-runtime/` and `.wrangler/` directories are disposable and ignored by Git.
-
-On portable, `npm run dev` uses `vinext dev` with HMR, starting at port 5173. Vinext records the running server in ignored `.vinext/` state, rejects an ordinary duplicate launch, and recovers stale state after a stopped process; exactly simultaneous starts can race. Pass `--port <port>` or `--hostname <host>` after `npm run dev --` when needed; keep portable previews on loopback.
-
-On managed Linux, use `sites-preview start` only for requested browser QA. The project's dev script runs Vite and accepts the supervisor's `--host 0.0.0.0 --port 4173 --strictPort` arguments. The internal browser uses `http://terminal.local:4173/`; it is not a user-facing URL. The supervisor owns the preview lifecycle. The ignored local profile survives the supervisor's cleared process environment.
-
-The portable profile simulates ChatGPT sign-in only for loopback development requests. Visit `/signin-with-chatgpt?return_to=/` to sign in as `local_seedy` (`seedy@sites.test`, display name `Seedy`) and `/signout-with-chatgpt?return_to=/` to sign out. The development cookie preserves that identity across server restarts. Mock auth is disabled in the managed-linux profile and is not included in production builds; hosted authentication remains dispatch-owned.
-
-The Worker uses `vinext/server/fetch-handler`, including Vinext's config-aware image handling. After building, `npm start` runs that Worker locally through Wrangler on `127.0.0.1`, sharing `.wrangler/state` with dev preview and local D1 migrations; it does not deploy the site or simulate sign-in. Use the URL printed by the server. Pass `npm start -- --port <port>` to select a different built-preview port.
-
-Local previews use Miniflare's placeholder `Request.cf` metadata without a network lookup. Set `CLOUDFLARE_CF_FETCH_ENABLED=true` to opt into fetching preview metadata; this setting does not change hosted request metadata.
-
-Local tool usage metrics are disabled by default. Set `WRANGLER_SEND_METRICS=true` to opt in.
-
-## Included Shape
-
-- edit site code under `app/`
-- `app/chatgpt-auth.ts` provides optional dispatch-owned ChatGPT sign-in helpers
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/index.ts` reads the D1 binding from the Cloudflare Worker environment
-- `db/schema.ts` starts intentionally empty
-- `@cloudflare/workers-types` provides Worker types; `cloudflare-env.d.ts` declares optional `DB`/`BUCKET` bindings—update these declarations if binding names change
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
-
-## Workspace Auth Headers
-
-Signed-in visitors receive both `oai-authenticated-user-id` and `oai-authenticated-user-email`. Private Sites require every visitor to sign in; public Sites may also have anonymous visitors, for whom neither header is present.
-
-The user ID is stable for the same user on the same Site and different across Sites. Use it as the durable user key; use email and name for display or contact purposes.
-
-SIWC-authenticated workspace sites may also receive `oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty `name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by `oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const userId = requestHeaders.get("oai-authenticated-user-id");
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
-```
-
-## Optional Dispatch-Owned ChatGPT Sign-In
-
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs optional or required ChatGPT sign-in:
-
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use the returned `userId` as the stable user key for user-owned records; do not use email as a durable identifier.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send anonymous visitors through Sign in with ChatGPT.
-- In a Server Component, start sign-in with `<a href={chatGPTSignInPath(returnTo)} target="_top">`. The auth helper module is server-only; do not import it into a Client Component.
-- Do not use `fetch`, XHR, a client-side router, or a framework link that can prefetch the sign-in route. SIWC must start as a top-level navigation.
-- Never request the AuthAPI authorization endpoint directly. The dispatch-owned `/signin-with-chatgpt` route must start the SIWC flow.
-- Use `chatGPTSignOutPath(returnTo)` for browser sign-out links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because they depend on per-request identity headers.
-
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the OAuth cookies, and identity header injection. Do not implement app routes for those reserved paths. Routes that do not import and call the helper remain anonymous-compatible.
-
-SIWC establishes identity only; it does not prove workspace membership. Use the Sites hosting platform's access policy controls for workspace-wide restrictions, or enforce explicit server-side membership or allowlist checks.
-
-Use SIWC for account pages, user-specific dashboards, saved records, and write actions tied to the current ChatGPT user. Leave public content anonymous.
-
-## Local D1 migrations
-
-For a D1-backed local preview, generate SQL with `npm run db:generate`. Build once through the Sites skill's build entrypoint (or `npm run build` for standalone use) to generate `dist/server/wrangler.json`, rebuilding if bindings change. From the project root, apply each pending migration in order:
+Use Node.js **22.13 or newer** (Node 24 recommended).
 
 ```sh
-node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js d1 execute DB --local --config dist/server/wrangler.json --persist-to .wrangler/state --file drizzle/0000_example.sql
+npm install
+npm run dev
 ```
 
-Replace the filename with the pending migration and `DB` with your D1 binding name if different. Use `.wrangler/state`, not `.wrangler/state/v3`; Wrangler adds the versioned directories. Do not replay migrations already applied locally. This updates only the preview database; publishing applies production migrations separately.
+Open the local URL printed by Vite, normally `http://127.0.0.1:5173`. This command starts both React and the RSVP API. Port 5173 is the frontend; port 3001 is the API.
 
-## Diagnostic Commands
+## Edit details
 
-- `npm run install:ci`: perform the one locked dependency install
-- `npm run dev`: start the Vite/Vinext development server
-- `npm run build`: build the deployable Sites artifact
-- `npm run start`: preview the built Worker locally with D1/R2 support
-- `npm run db:generate`: generate Drizzle migrations after schema changes
+- `src/config.js`: names, dates, venue, directions, event times and music video.
+- `src/App.jsx`: page sections, entrance animation, music, gallery and RSVP.
+- `src/styles.css`: responsive styles and animation timing.
+- `public/`: illustrations and four supplied photographs.
 
-When using the Sites plugin, follow its skill instructions for installation, builds, and publishing. These npm commands remain available for standalone use.
+The venue image is a decorative villa illustration, not a photograph of Waves Club Resort.
 
-The portable build runs Vinext directly without a host `timeout` command. The managed-linux build uses `scripts/build-verified.sh` and its existing `SITES_BUILD_TIMEOUT` setting.
+## RSVP
 
-## Learn More
+The only visible fields are attendee name and yes/no attendance. Responses are saved by the included Node API to `data/rsvps.sqlite`, using Node's built-in SQLite module. Responses are not exposed by a public read endpoint. Editing a response within the same page session updates its record. New sessions are separate submissions; names are not treated as unique identities. Request IDs prevent a retry from duplicating a response.
 
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+Export responses locally:
+
+```sh
+npm run export:rsvps --silent > rsvps.csv
+```
+
+Keep the database private and back it up. `data/` is ignored by Git and excluded from the supplied archive.
+
+## Build and host later
+
+```sh
+npm run build
+npm start
+```
+
+`npm start` serves `dist/` and `/api/rsvp` together on port 3001. For hosting, set `HOST=0.0.0.0`, `PORT` as required by your provider, and `RSVP_DB_PATH` to a persistent writable disk. These are process environment variables; `.env.example` documents them. The server does not automatically load `.env` files. Put the server behind HTTPS. The SQLite file requires persistent storage: don't use an ephemeral serverless filesystem.
+
+You can host `dist/` on a static host, but RSVP then needs a separately hosted backend and a same-origin `/api/rsvp` proxy. Static-only hosting cannot save responses by itself. `npm run preview` is a frontend-only preview; use `npm run dev` or `npm start` to test RSVP.
+
+## Local videos and music
+
+No YouTube embed or remote audio remains. Add your files at:
+
+- `public/media/a-thousand-years.mp3` — your audio file, user-initiated playback and loop.
+- `public/media/chapter-background.mp4` — muted looping background behind “A new chapter, together.”
+- `public/media/our-film.mp4` — the standalone film section, with normal video controls.
+
+These media files are not supplied yet. Until present, the chapter uses the villa image, the film section shows a “coming soon” poster, and music shows “Music coming soon.” The frontend checks the file's media type before activating playback. Use H.264 MP4 for broad browser support; the Node server supports byte-range requests for seeking. Change paths in `src/config.js` if desired, then rebuild for production.
+
+## Our story and illustrations
+
+`src/config.js` contains editable story entries inspired by the supplied photo-timeline reference. The current copy is draft wording, not a claim about your meeting/proposal dates. Replace the titles, text, dates, and photos with your real milestones.
+
+Vidhi’s likeness in the car, portrait, and six-pose dance sheet has been updated using the supplied magenta-outfit reference photo. The dance is now a bundled MP4 with blended illustrated poses, playing automatically after the doors open.
+
+The function cards use custom Haldi, Sangeet, and wedding background artwork. The venue includes an embedded map centred on the destination resolved from your supplied Google Maps link, plus the original directions link.
+
+## Accessibility and motion
+
+The entrance respects reduced-motion preferences. Guests can skip directly to the invitation. The gallery uses an accessible Radix dialog with Escape to close, and RSVP uses keyboard-accessible radio controls. The optional WebMCP tool only stages an RSVP for review; it does not submit it.
+
+## Verification
+
+```sh
+npm test
+npm run build
+```
+
+The RSVP test verifies persistence across reopening the database, safe retries, response updates, duplicate attendee names, and invalid-input rejection. The local UI was checked on desktop and at a 390px mobile width, with a successful test RSVP submission.
+
+## Automatic dance video
+
+`public/media/our-dance.mp4` is the bundled illustrated dance video. Scrolling opens the doors and reveals it; the dance then plays on its own clock (muted, inline), with a skip option. When it ends, the chapter invitation appears. It is a pose-based illustrated film with dissolves, not photoreal footage or motion-captured character animation. Scrolling back to the entrance resets playback.
+
+## Vercel deployment from GitHub
+
+Import this repository into Vercel with the Vite preset and Node.js 24.x. The root `vercel.json` sets `npm run build` and `dist`. This deploys the frontend only.
+
+**RSVP launch requirement:** the included `server/` API uses a local SQLite database and is not deployed by Vercel's static Vite build. Connect a persistent hosted RSVP backend before sending invitations; a frontend-only deployment cannot save responses. Never commit attendee databases or `.env` secrets.
