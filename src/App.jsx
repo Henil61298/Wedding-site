@@ -257,7 +257,7 @@ function Entrance() {
           className="opening-cue"
           style={{ opacity: 1 - clamp(progress / 0.08) }}
         >
-          <span>SCROLL TO STEP INTO OUR CELEBRATION</span>
+          <span>Scroll to enter</span>
           <ArrowDown size={20} />
         </div>
       </div>
@@ -425,7 +425,15 @@ function RSVP() {
     </section>
   );
 }
+function Countdown() {
+  const [now,setNow]=useState(Date.now());
+  useEffect(()=>{const timer=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(timer)},[]);
+  const remaining=Math.max(0,Math.floor((new Date('2027-02-01T00:00:00+05:30').getTime()-now)/1000));
+  const values=[Math.floor(remaining/86400),Math.floor(remaining/3600)%24,Math.floor(remaining/60)%60,remaining%60];
+  return <section className="countdown section" aria-label="Countdown to our celebration"><p className="eyebrow">COUNTING EVERY MOMENT</p><h2>{remaining?'Until our forever begins.':'Our celebration is here.'}</h2><div className="countdown-grid">{values.map((value,i)=><div key={i}><strong>{String(value).padStart(2,'0')}</strong><span>{['Days','Hours','Minutes','Seconds'][i]}</span></div>)}</div><p>Our celebrations begin 1st February 2027</p></section>
+}
 function Gallery() {
+  const [expanded,setExpanded]=useState(false);
   return (
     <section className="section gallery" id="gallery">
       <p className="eyebrow">LITTLE MOMENTS, BIG LOVE</p>
@@ -435,19 +443,14 @@ function Gallery() {
         <i>of us.</i>
       </h2>
       <div className="gallery-grid">
-        {[
-          "Vidhi smiling",
-          "Henil smiling",
-          "Vidhi enjoying a day out",
-          "Henil on a day out",
-        ].map((alt, i) => (
+        {(expanded?wedding.gallery:wedding.gallery.slice(0,4)).map(({src,alt}) => (
           <Dialog.Root key={alt}>
             <Dialog.Trigger asChild>
               <button
                 className="photo-button"
                 aria-label={`Enlarge photo: ${alt}`}
               >
-                <img src={`/photo-${i + 1}.jpg`} alt={alt} loading="lazy" />
+                <img src={src} alt={alt} loading="lazy" />
               </button>
             </Dialog.Trigger>
             <Dialog.Portal>
@@ -457,7 +460,7 @@ function Gallery() {
                 aria-describedby={undefined}
               >
                 <Dialog.Title className="sr-only">{alt}</Dialog.Title>
-                <img src={`/photo-${i + 1}.jpg`} alt={alt} />
+                <img src={src} alt={alt} />
                 <Dialog.Close className="dialog-close" aria-label="Close photo">
                   <X size={22} />
                 </Dialog.Close>
@@ -466,6 +469,8 @@ function Gallery() {
           </Dialog.Root>
         ))}
       </div>
+      <button className="button gallery-expand" aria-expanded={expanded} onClick={()=>setExpanded(!expanded)}>{expanded?'Collapse gallery':'Expand gallery'}</button>
+      {expanded&&wedding.gallery.length<=4&&<p className="gallery-note">More memories coming soon.</p>}
     </section>
   );
 }
@@ -474,7 +479,7 @@ export default function App() {
     <>
       <nav aria-label="Main navigation">
         <a className="monogram" href="#" aria-label="Henil and Vidhi home">
-          H<span>&</span>V
+          <svg viewBox="0 0 64 64" className="wedding-emblem" aria-hidden="true"><path d="M12 51V25a20 20 0 0 1 40 0v26" fill="none" stroke="currentColor" strokeWidth="1.3"/><path d="M19 47V22m14 0v25M19 34h14m2-12 8 25 8-25" fill="none" stroke="currentColor" strokeWidth="2"/><path d="M26 13q-6-7-8-1t8 9q10-3 8-9t-8 1" fill="none" stroke="currentColor"/><path d="M8 54h48" stroke="currentColor"/></svg>
         </a>
         <a href="#celebrations">The celebrations</a>
         <a href="#venue">The venue</a>
@@ -484,6 +489,7 @@ export default function App() {
       </nav>
       <main>
         <Entrance />
+        <Countdown />
         <OurStory />
         <section id="celebrations" className="section celebrations">
           <p className="eyebrow">A CELEBRATION OF LOVE</p>
@@ -528,24 +534,11 @@ export default function App() {
           </div>
         </section>
         <section id="venue" className="venue-section">
-          <div className="venue-map">
-            <iframe
-              title="Map showing Waves Club Resort, Vadodara"
-              src={wedding.mapEmbed}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              allowFullScreen
-            />
-            <a href={wedding.directions} target="_blank" rel="noreferrer">
-              Open route to Waves Club Resort <ArrowUpRight size={16} />
-            </a>
-          </div>
           <div className="venue-copy">
             <MapPin size={24} strokeWidth={1} />
             <p className="eyebrow">MEET US HERE</p>
             <h2>
-              Waves <br />
-              Club Resort
+              Waves Club Resort
             </h2>
             <p className="venue-city">Vadodara</p>
             <p>
@@ -560,6 +553,18 @@ export default function App() {
               rel="noreferrer"
             >
               Get Directions <ArrowUpRight size={16} />
+            </a>
+          </div>
+          <div className="venue-map">
+            <iframe
+              title="Map showing Waves Club Resort, Vadodara"
+              src={wedding.mapEmbed}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allowFullScreen
+            />
+            <a href={wedding.directions} target="_blank" rel="noreferrer">
+              Open route to Waves Club Resort <ArrowUpRight size={16} />
             </a>
           </div>
         </section>

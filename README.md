@@ -59,7 +59,7 @@ These media files are not supplied yet. Until present, the chapter uses the vill
 
 `src/config.js` contains editable story entries inspired by the supplied photo-timeline reference. The current copy is draft wording, not a claim about your meeting/proposal dates. Replace the titles, text, dates, and photos with your real milestones.
 
-Vidhi’s likeness in the car, portrait, and six-pose dance sheet has been updated using the supplied magenta-outfit reference photo. The dance is now a bundled MP4 with blended illustrated poses, playing automatically after the doors open.
+Vidhi’s likeness in the car, portrait, and six-pose dance sheet has been updated using the supplied magenta-outfit reference photo. The dance is now a bundled MP4 with separate illustrated poses, playing automatically after the doors open.
 
 The function cards use custom Haldi, Sangeet, and wedding background artwork. The venue includes an embedded map centred on the destination resolved from your supplied Google Maps link, plus the original directions link.
 
@@ -78,7 +78,9 @@ The RSVP test verifies persistence across reopening the database, safe retries, 
 
 ## Automatic dance video
 
-`public/media/our-dance.mp4` is the bundled illustrated dance video. Scrolling opens the doors and reveals it; the dance then plays on its own clock (muted, inline), with a skip option. When it ends, the chapter invitation appears. It is a pose-based illustrated film with dissolves, not photoreal footage or motion-captured character animation. Scrolling back to the entrance resets playback.
+`public/media/our-dance.mp4` is the bundled illustrated dance video. Scrolling opens the doors and reveals it; the dance then plays on its own clock (muted, inline), with a skip option. When it ends, the chapter invitation appears. It is a pose-based illustrated film with clean cuts, not photoreal footage or motion-captured character animation. Scrolling back to the entrance resets playback.
+
+Gallery: add extra photos to public/gallery and list them in wedding.gallery in src/config.js. The countdown targets the start of 1 February 2027 in India, not an unconfirmed ceremony time.
 
 ## Vercel deployment from GitHub
 

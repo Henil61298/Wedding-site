@@ -37,6 +37,13 @@ export const wedding = {
       alt: "Henil and Vidhi together",
     },
   ],
+  // Add up to 12 more entries here; place image files in public/gallery/.
+  gallery: [
+    {src:'/photo-1.jpg',alt:'Vidhi smiling'},
+    {src:'/photo-2.jpg',alt:'Henil smiling'},
+    {src:'/photo-3.jpg',alt:'Vidhi enjoying a day out'},
+    {src:'/photo-4.jpg',alt:'Henil on a day out'},
+  ],
   events: [
     {
       id: "haldi",

@@ -1511,3 +1511,39 @@ footer > span {
 .entrance{height:240svh}.dance-layer{pointer-events:auto;transition:opacity .65s ease}.dance-layer[inert]{pointer-events:none}.inside-invitation{transition:opacity .8s ease}.inside-invitation[inert]{pointer-events:none}.dance-video{display:block;width:min(66svh,660px,94vw);height:min(66svh,660px,94vw);object-fit:contain;background:#fbf8ef}.dance-stage>.eyebrow{margin:0 20px 12px;text-align:center}.dance-controls{display:flex;gap:22px;margin-top:18px}.dance-controls .text-link{font-size:13px}.dance-stage{padding:30px 0 60px}.dance-caption{margin-top:14px}
 @media(max-width:600px){.entrance{height:230svh}.dance-stage{padding-top:40px}.dance-video{width:96vw;height:96vw}.dance-stage>.eyebrow{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.entrance{height:auto}}
+
+/* Invitation refinements */
+/* Fine stationery typography on a feathered ivory wash. */
+.entrance-heading{isolation:isolate}
+.entrance-heading::before{content:"";position:absolute;inset:-25px 0 -32px;z-index:-1;background:linear-gradient(180deg,rgba(255,248,234,.95) 0%,rgba(255,248,234,.88) 65%,rgba(255,248,234,0) 100%);pointer-events:none}
+.entrance-heading .date{display:inline-flex;align-items:center;justify-content:center;gap:16px;background:none;padding:4px 0;border-radius:0;color:#514230;font-weight:500;letter-spacing:.2em;text-shadow:none}
+.entrance-heading .date::before,.entrance-heading .date::after{content:"";width:30px;height:1px;background:#a28a67}
+.entrance-heading .hero-note{color:#66543f;font-weight:400;text-shadow:none;margin-top:10px}
+.opening-cue{color:#66543f;font:italic 20px var(--serif);font-weight:400;letter-spacing:normal;line-height:1.4;text-shadow:none;padding:14px 0 4px;width:340px;max-width:90vw}
+.opening-cue::before{content:none}
+.opening-cue svg{color:#66543f;stroke-width:1.4}
+@media(max-width:600px){.entrance-heading .date{gap:10px;letter-spacing:.12em;font-size:11px}.entrance-heading .date::before,.entrance-heading .date::after{width:20px}.opening-cue{width:290px;font-size:17px}}
+.wedding-emblem{width:57px;height:57px;display:block;color:#755740}.monogram{line-height:1}
+.countdown{text-align:center;background:#f4eddf}.countdown h2{font-size:clamp(30px,5vw,55px)}.countdown-grid{display:flex;justify-content:center;gap:clamp(20px,5vw,60px);margin:30px 0}.countdown-grid strong{display:block;font-family:Georgia,serif;font-size:clamp(30px,5vw,58px);font-weight:400;color:#765c42}.countdown-grid span{font-size:10px;letter-spacing:2px;text-transform:uppercase}.countdown>p:last-child{font-size:13px}
+.gallery-expand{margin:32px auto 0;display:block}.gallery-note{text-align:center;font-style:italic;margin-top:20px}
+@media(max-width:600px){.entrance-visual{background:url('/villa.png') center center/cover no-repeat}.villa-plane{height:100%;width:auto;min-width:100%;aspect-ratio:1672/941;left:50%;bottom:0;transform:translateX(-50%);mask-image:none}.entrance-heading{background:none;padding:25px 14px 45px;top:0}.wedding-emblem{width:44px;height:44px}.entrance-heading .hero-note{font-size:17px}}
+
+/* A feathered edge blends the scroll cue into the invitation artwork. */
+.opening-cue{background:none;border:0;border-radius:0;box-shadow:none;color:#4d3d2c;padding:0;bottom:34px;width:100%;max-width:none;font:italic 18px/1.4 var(--serif);letter-spacing:.025em;isolation:isolate;gap:7px}
+.opening-cue::before{content:"";position:absolute;z-index:-1;left:0;right:0;bottom:-38px;height:145px;background:linear-gradient(to top,rgba(255,248,235,.98),rgba(255,248,235,.86) 38%,rgba(255,248,235,0));pointer-events:none}
+.opening-cue svg{width:16px;height:16px;color:#746047;stroke-width:1.2}
+@media(max-width:600px){.opening-cue{font-size:17px;bottom:39px}.opening-cue::before{bottom:-43px;height:130px}.entrance-sticky{min-height:0}}
+
+/* Keep the countdown and story close without changing other section spacing. */
+.countdown.section{padding-bottom:36px}
+.countdown>p:last-child{margin-bottom:0}
+.countdown + .story-section{padding-top:42px}
+@media(max-width:600px){.countdown.section{padding-bottom:24px}.countdown + .story-section{padding-top:30px}}
+
+/* Venue introduction precedes the map at every screen size. */
+.venue-section{grid-template-columns:1fr;min-height:0}
+.venue-copy{align-items:center;text-align:center;padding:48px 6% 36px}
+.venue-copy h2 br{display:none}
+.venue-copy h2 br::after{content:" "}
+.venue-map{min-height:370px}
+.venue-map iframe{min-height:330px}

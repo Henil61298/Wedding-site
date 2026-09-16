@@ -52,7 +52,29 @@ export function MusicPlayer() {
   const available = useMediaAvailable(wedding.media.music, "audio");
   const [playing, setPlaying] = useState(false);
   const [error, setError] = useState(false);
+  const autoStartPending = useRef(true);
+  useEffect(() => {
+    if (!available) return;
+    const attempt = () => {
+      if (!autoStartPending.current || !audio.current) return;
+      audio.current.play().then(() => {
+        autoStartPending.current = false;
+      }).catch(() => { /* Retry on a browser-authorized interaction. */ });
+    };
+    const interact = (event) => {
+      if (event.target instanceof Element && event.target.closest('.music-player')) return;
+      attempt();
+    };
+    attempt();
+    document.addEventListener('click', interact);
+    document.addEventListener('keydown', interact);
+    return () => {
+      document.removeEventListener('click', interact);
+      document.removeEventListener('keydown', interact);
+    };
+  }, [available]);
   async function toggle() {
+    autoStartPending.current = false;
     if (!audio.current) return;
     if (playing) audio.current.pause();
     else
@@ -70,7 +92,8 @@ export function MusicPlayer() {
           ref={audio}
           src={wedding.media.music}
           loop
-          preload="none"
+          autoPlay
+          preload="auto"
           onPlay={() => setPlaying(true)}
           onPause={() => setPlaying(false)}
           onError={() => {

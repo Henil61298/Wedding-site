@@ -1,0 +1,1 @@
+Place your extra gallery photos here and add {src: "/gallery/filename.jpg", alt: "Photo description"} entries to wedding.gallery in src/config.js. The first four show initially; Expand gallery reveals the rest.
