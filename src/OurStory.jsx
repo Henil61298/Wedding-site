@@ -11,7 +11,12 @@ export function OurStory() {
         {wedding.story.map((moment, i) => (
           <article className={`story-moment moment-${i}`} key={moment.title}>
             <figure>
-              <img src={moment.image} alt={moment.alt} loading="lazy" />
+              <img
+                src={moment.image}
+                alt={moment.alt}
+                loading="lazy"
+                style={{ objectPosition: moment.imagePosition ?? "center 30%" }}
+              />
             </figure>
             <div className="story-marker">
               <Heart size={12} fill="currentColor" />

@@ -432,8 +432,35 @@ function Countdown() {
   const values=[Math.floor(remaining/86400),Math.floor(remaining/3600)%24,Math.floor(remaining/60)%60,remaining%60];
   return <section className="countdown section" aria-label="Countdown to our celebration"><p className="eyebrow">COUNTING EVERY MOMENT</p><h2>{remaining?'Until our forever begins.':'Our celebration is here.'}</h2><div className="countdown-grid">{values.map((value,i)=><div key={i}><strong>{String(value).padStart(2,'0')}</strong><span>{['Days','Hours','Minutes','Seconds'][i]}</span></div>)}</div><p>Our celebrations begin 1st February 2027</p></section>
 }
+function GalleryPhoto({ src, alt }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <Dialog.Root open={open} onOpenChange={setOpen}>
+      <Dialog.Trigger asChild>
+        <button className="photo-button" aria-label={`Enlarge photo: ${alt}`}>
+          <img src={src} alt={alt} loading="lazy" />
+        </button>
+      </Dialog.Trigger>
+      <Dialog.Portal>
+        <Dialog.Overlay
+          className="dialog-overlay photo-dialog-overlay"
+          onClick={() => setOpen(false)}
+        />
+        <Dialog.Content className="photo-dialog" aria-describedby={undefined}>
+          <Dialog.Title className="sr-only">{alt}</Dialog.Title>
+          <img src={src} alt={alt} />
+          <Dialog.Close
+            className="photo-dialog-close"
+            aria-label="Close photo"
+          >
+            <X size={22} />
+          </Dialog.Close>
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
+  );
+}
 function Gallery() {
-  const [expanded,setExpanded]=useState(false);
   return (
     <section className="section gallery" id="gallery">
       <p className="eyebrow">LITTLE MOMENTS, BIG LOVE</p>
@@ -443,34 +470,42 @@ function Gallery() {
         <i>of us.</i>
       </h2>
       <div className="gallery-grid">
-        {(expanded?wedding.gallery:wedding.gallery.slice(0,4)).map(({src,alt}) => (
-          <Dialog.Root key={alt}>
-            <Dialog.Trigger asChild>
-              <button
-                className="photo-button"
-                aria-label={`Enlarge photo: ${alt}`}
-              >
-                <img src={src} alt={alt} loading="lazy" />
-              </button>
-            </Dialog.Trigger>
-            <Dialog.Portal>
-              <Dialog.Overlay className="dialog-overlay" />
-              <Dialog.Content
-                className="photo-dialog"
-                aria-describedby={undefined}
-              >
-                <Dialog.Title className="sr-only">{alt}</Dialog.Title>
-                <img src={src} alt={alt} />
-                <Dialog.Close className="dialog-close" aria-label="Close photo">
-                  <X size={22} />
-                </Dialog.Close>
-              </Dialog.Content>
-            </Dialog.Portal>
-          </Dialog.Root>
+        {wedding.gallery.slice(0, 4).map((photo) => (
+          <GalleryPhoto key={photo.src} {...photo} />
         ))}
       </div>
-      <button className="button gallery-expand" aria-expanded={expanded} onClick={()=>setExpanded(!expanded)}>{expanded?'Collapse gallery':'Expand gallery'}</button>
-      {expanded&&wedding.gallery.length<=4&&<p className="gallery-note">More memories coming soon.</p>}
+      <Dialog.Root>
+        <Dialog.Trigger asChild>
+          <button className="button gallery-expand">Expand gallery</button>
+        </Dialog.Trigger>
+        <Dialog.Portal>
+          <Dialog.Overlay className="dialog-overlay" />
+          <Dialog.Content className="gallery-dialog">
+            <div className="gallery-dialog-header">
+              <div>
+                <Dialog.Title className="gallery-dialog-title">
+                  Little moments, big love
+                </Dialog.Title>
+                <Dialog.Description className="gallery-dialog-description">
+                  Browse all {wedding.gallery.length} photos. Select one to view it
+                  larger.
+                </Dialog.Description>
+              </div>
+              <Dialog.Close
+                className="gallery-dialog-close"
+                aria-label="Close gallery"
+              >
+                <X size={22} />
+              </Dialog.Close>
+            </div>
+            <div className="gallery-grid gallery-dialog-grid">
+              {wedding.gallery.map((photo) => (
+                <GalleryPhoto key={photo.src} {...photo} />
+              ))}
+            </div>
+          </Dialog.Content>
+        </Dialog.Portal>
+      </Dialog.Root>
     </section>
   );
 }
