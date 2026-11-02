@@ -15,6 +15,7 @@ export function OurStory() {
                 src={moment.image}
                 alt={moment.alt}
                 loading="lazy"
+                decoding="async"
                 style={{ objectPosition: moment.imagePosition ?? "center 30%" }}
               />
             </figure>

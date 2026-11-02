@@ -29,11 +29,23 @@ function AnimatedCar({ moving }) {
       aria-label="Henil and Vidhi smiling in their flower-covered vintage car"
     >
       <defs>
-        <mask id="car-outline" style={{maskType: "alpha"}}><image href="/car-mask.png" width="1774" height="887" /></mask>
-        <mask id="vidhi-hair-edge" maskUnits="userSpaceOnUse" x="0" y="0" width="1774" height="887">
+        <mask id="car-outline" style={{ maskType: "alpha" }}>
+          <image href="/car-mask.png" width="1774" height="887" />
+        </mask>
+        <mask
+          id="vidhi-hair-edge"
+          maskUnits="userSpaceOnUse"
+          x="0"
+          y="0"
+          width="1774"
+          height="887"
+        >
           <rect width="1774" height="887" fill="white" />
           <rect x="490" y="65" width="218" height="225" fill="black" />
-          <path d="M490 290 L532 207 Q548 153 578 129 Q601 109 623 115 Q666 117 685 163 Q698 202 708 240 L708 290Z" fill="white" />
+          <path
+            d="M490 290 L532 207 Q548 153 578 129 Q601 109 623 115 Q666 117 685 163 Q698 202 708 240 L708 290Z"
+            fill="white"
+          />
         </mask>
         <mask id="car-body">
           <rect width="1774" height="887" fill="white" />
@@ -47,25 +59,32 @@ function AnimatedCar({ moving }) {
           <ellipse cx="767" cy="139" rx="64" ry="80" />
         </clipPath>
       </defs>
-      <g mask="url(#car-outline)"><g mask="url(#vidhi-hair-edge)">
-      <image href="/car.png" width="1774" height="887" mask="url(#car-body)" />
-      <g className="vidhi-head">
-        <image
-          href="/car.png"
-          width="1774"
-          height="887"
-          clipPath="url(#vidhi-head)"
-        />
+      <g mask="url(#car-outline)">
+        <g mask="url(#vidhi-hair-edge)">
+          <image
+            href="/car.png"
+            width="1774"
+            height="887"
+            mask="url(#car-body)"
+          />
+          <g className="vidhi-head">
+            <image
+              href="/car.png"
+              width="1774"
+              height="887"
+              clipPath="url(#vidhi-head)"
+            />
+          </g>
+          <g className="henil-head">
+            <image
+              href="/car.png"
+              width="1774"
+              height="887"
+              clipPath="url(#henil-head)"
+            />
+          </g>
+        </g>
       </g>
-      <g className="henil-head">
-        <image
-          href="/car.png"
-          width="1774"
-          height="887"
-          clipPath="url(#henil-head)"
-        />
-      </g>
-      </g></g>
     </svg>
   );
 }
@@ -76,7 +95,9 @@ function Entrance() {
   const [ready, setReady] = useState(false);
   const [reduced, setReduced] = useState(false);
   const [danceDone, setDanceDone] = useState(false);
-  useEffect(()=>{if(progress<.08)setDanceDone(false)},[progress]);
+  useEffect(() => {
+    if (progress < 0.08) setDanceDone(false);
+  }, [progress]);
   useEffect(() => {
     const mq = matchMedia("(prefers-reduced-motion: reduce)");
     const sync = () => setReduced(mq.matches);
@@ -111,11 +132,11 @@ function Entrance() {
     return () => clearTimeout(t);
   }, [ready]);
   const open = clamp((progress - 0.05) / 0.24);
-  const carFade = 1 - clamp((progress - 0.015) / 0.10);
+  const carFade = 1 - clamp((progress - 0.015) / 0.1);
   const sceneFade = 1 - clamp((progress - 0.29) / 0.08);
-  const chapterVisible = danceDone || progress >= .94;
-  const danceActive = progress >= .37 && !chapterVisible && !reduced;
-  const danceOpacity = chapterVisible ? 0 : clamp((progress - .32) / .05);
+  const chapterVisible = danceDone || progress >= 0.94;
+  const danceActive = progress >= 0.37 && !chapterVisible && !reduced;
+  const danceOpacity = chapterVisible ? 0 : clamp((progress - 0.32) / 0.05);
   const chapterOpacity = chapterVisible ? 1 : 0;
   return (
     <section
@@ -129,7 +150,7 @@ function Entrance() {
           inert={!chapterVisible ? true : undefined}
           style={{ opacity: reduced ? 0 : chapterOpacity }}
         >
-          <ChapterVideo active={chapterVisible && progress > .3} />
+          <ChapterVideo active={chapterVisible && progress > 0.3} />
           <span className="tiny-flower">✧</span>
           <p className="eyebrow">WITH LOVE, FROM US TO YOU</p>
           <h2>
@@ -151,7 +172,10 @@ function Entrance() {
           style={{ opacity: reduced ? 0 : danceOpacity }}
           inert={!danceActive ? true : undefined}
         >
-          <DanceSequence active={danceActive} onComplete={()=>setDanceDone(true)} />
+          <DanceSequence
+            active={danceActive}
+            onComplete={() => setDanceDone(true)}
+          />
         </div>
         <div
           className="entrance-visual"
@@ -426,19 +450,54 @@ function RSVP() {
   );
 }
 function Countdown() {
-  const [now,setNow]=useState(Date.now());
-  useEffect(()=>{const timer=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(timer)},[]);
-  const remaining=Math.max(0,Math.floor((new Date('2027-02-01T00:00:00+05:30').getTime()-now)/1000));
-  const values=[Math.floor(remaining/86400),Math.floor(remaining/3600)%24,Math.floor(remaining/60)%60,remaining%60];
-  return <section className="countdown section" aria-label="Countdown to our celebration"><p className="eyebrow">COUNTING EVERY MOMENT</p><h2>{remaining?'Until our forever begins.':'Our celebration is here.'}</h2><div className="countdown-grid">{values.map((value,i)=><div key={i}><strong>{String(value).padStart(2,'0')}</strong><span>{['Days','Hours','Minutes','Seconds'][i]}</span></div>)}</div><p>Our celebrations begin 1st February 2027</p></section>
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => {
+    const timer = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+  const remaining = Math.max(
+    0,
+    Math.floor((new Date("2027-02-01T00:00:00+05:30").getTime() - now) / 1000),
+  );
+  const values = [
+    Math.floor(remaining / 86400),
+    Math.floor(remaining / 3600) % 24,
+    Math.floor(remaining / 60) % 60,
+    remaining % 60,
+  ];
+  return (
+    <section
+      className="countdown section"
+      aria-label="Countdown to our celebration"
+    >
+      <p className="eyebrow">COUNTING EVERY MOMENT</p>
+      <h2>
+        {remaining ? "Until our forever begins." : "Our celebration is here."}
+      </h2>
+      <div className="countdown-grid">
+        {values.map((value, i) => (
+          <div key={i}>
+            <strong>{String(value).padStart(2, "0")}</strong>
+            <span>{["Days", "Hours", "Minutes", "Seconds"][i]}</span>
+          </div>
+        ))}
+      </div>
+      <p>Our celebrations begin 1st February 2027</p>
+    </section>
+  );
 }
 function GalleryPhoto({ src, alt }) {
   const [open, setOpen] = useState(false);
+  const imageName = src
+    .split("/")
+    .pop()
+    .replace(/\.[^.]+$/, ".webp");
+  const thumbnailSrc = `/gallery/thumbs/${imageName}`;
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
         <button className="photo-button" aria-label={`Enlarge photo: ${alt}`}>
-          <img src={src} alt={alt} loading="lazy" />
+          <img src={thumbnailSrc} alt={alt} loading="lazy" decoding="async" />
         </button>
       </Dialog.Trigger>
       <Dialog.Portal>
@@ -448,11 +507,8 @@ function GalleryPhoto({ src, alt }) {
         />
         <Dialog.Content className="photo-dialog" aria-describedby={undefined}>
           <Dialog.Title className="sr-only">{alt}</Dialog.Title>
-          <img src={src} alt={alt} />
-          <Dialog.Close
-            className="photo-dialog-close"
-            aria-label="Close photo"
-          >
+          <img src={src} alt={alt} loading="lazy" decoding="async" />
+          <Dialog.Close className="photo-dialog-close" aria-label="Close photo">
             <X size={22} />
           </Dialog.Close>
         </Dialog.Content>
@@ -487,8 +543,7 @@ function Gallery() {
                   Little moments, big love
                 </Dialog.Title>
                 <Dialog.Description className="gallery-dialog-description">
-                  Browse all {wedding.gallery.length} photos. Select one to view it
-                  larger.
+                  Browse all photos. Select one to view it larger.
                 </Dialog.Description>
               </div>
               <Dialog.Close
@@ -514,7 +569,30 @@ export default function App() {
     <>
       <nav aria-label="Main navigation">
         <a className="monogram" href="#" aria-label="Henil and Vidhi home">
-          <svg viewBox="0 0 64 64" className="wedding-emblem" aria-hidden="true"><path d="M12 51V25a20 20 0 0 1 40 0v26" fill="none" stroke="currentColor" strokeWidth="1.3"/><path d="M19 47V22m14 0v25M19 34h14m2-12 8 25 8-25" fill="none" stroke="currentColor" strokeWidth="2"/><path d="M26 13q-6-7-8-1t8 9q10-3 8-9t-8 1" fill="none" stroke="currentColor"/><path d="M8 54h48" stroke="currentColor"/></svg>
+          <svg
+            viewBox="0 0 64 64"
+            className="wedding-emblem"
+            aria-hidden="true"
+          >
+            <path
+              d="M12 51V25a20 20 0 0 1 40 0v26"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.3"
+            />
+            <path
+              d="M19 47V22m14 0v25M19 34h14m2-12 8 25 8-25"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            />
+            <path
+              d="M26 13q-6-7-8-1t8 9q10-3 8-9t-8 1"
+              fill="none"
+              stroke="currentColor"
+            />
+            <path d="M8 54h48" stroke="currentColor" />
+          </svg>
         </a>
         <a href="#celebrations">The celebrations</a>
         <a href="#venue">The venue</a>
@@ -572,9 +650,7 @@ export default function App() {
           <div className="venue-copy">
             <MapPin size={24} strokeWidth={1} />
             <p className="eyebrow">MEET US HERE</p>
-            <h2>
-              Waves Club Resort
-            </h2>
+            <h2>Waves Club Resort</h2>
             <p className="venue-city">Vadodara</p>
             <p>
               Two beautiful days.
