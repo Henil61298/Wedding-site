@@ -510,10 +510,11 @@ h3 {
 .rsvp-content legend {
   font-size: 14px;
 }
-.rsvp-content input {
+.rsvp-content input,
+.rsvp-content textarea {
   display: block;
   width: 100%;
-  margin: 8px 0 24px;
+  margin: 8px 0 20px;
   border: 0;
   border-bottom: 1px solid #a9af9a;
   background: transparent;
@@ -521,6 +522,24 @@ h3 {
   padding: 10px 0;
   font-size: 16px;
   color: var(--ink);
+}
+.rsvp-content textarea {
+  font-family: inherit;
+  min-height: 92px;
+  resize: vertical;
+  line-height: 1.5;
+}
+.rsvp-content textarea::placeholder {
+  font: inherit;
+  font-size: 16px;
+  color: #777c6c;
+  opacity: 1;
+}
+.rsvp-wishes-count {
+  margin: -14px 0 24px;
+  color: #747c68;
+  font-size: 12px;
+  text-align: right;
 }
 fieldset {
   border: 0;

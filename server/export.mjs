@@ -9,11 +9,13 @@ const db = openRsvps(
     ),
 );
 const quote = (s) => '"' + String(s).replaceAll('"', '""') + '"';
-console.log("Name,Attending,Updated at");
+console.log("Name,Attending,Wishes,Updated at");
 for (const r of db
-  .prepare("SELECT name,attending,updated_at FROM rsvps ORDER BY updated_at")
+  .prepare("SELECT name,attending,wishes,updated_at FROM rsvps ORDER BY updated_at")
   .all())
   console.log(
-    [r.name, r.attending ? "Yes" : "No", r.updated_at].map(quote).join(","),
+    [r.name, r.attending ? "Yes" : "No", r.wishes, r.updated_at]
+      .map(quote)
+      .join(","),
   );
 db.close();

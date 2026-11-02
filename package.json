@@ -12,7 +12,7 @@
     "preview": "vite preview --host 127.0.0.1",
     "start": "node server/index.mjs",
     "export:rsvps": "node server/export.mjs",
-    "test": "node --test server/rsvp.test.mjs"
+    "test": "node --test server/rsvp.test.mjs api/rsvp.test.js"
   },
   "dependencies": {
     "react": "19.2.6",

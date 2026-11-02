@@ -20,7 +20,7 @@ export const wedding = {
       date: 2025,
       title: "When our paths crossed",
       text: "The beginning of a story only we could write.",
-      image: "/gallery/optimized/DSC01158.webp",
+      image: "/gallery/optimized/DSC00646.webp",
       imagePosition: "50% 70%",
       alt: "Vidhi smiling",
     },
@@ -35,7 +35,7 @@ export const wedding = {
       date: "2nd February 2027",
       title: "Our forever begins",
       text: "We can’t wait to celebrate our next chapter with you.",
-      image: "/gallery/optimized/DSC00610.webp",
+      image: "/gallery/optimized/DSC00579.webp",
       imagePosition: "48% 50%",
       alt: "Henil and Vidhi together",
     },
@@ -44,41 +44,143 @@ export const wedding = {
   gallery: [
     { src: "/gallery/optimized/DSC01531.webp", alt: "Vidhi smiling" },
     { src: "/gallery/optimized/DSC02671.webp", alt: "Henil smiling" },
-    { src: "/gallery/optimized/DSC03070.webp", alt: "Vidhi enjoying a day out" },
+    {
+      src: "/gallery/optimized/DSC03070.webp",
+      alt: "Vidhi enjoying a day out",
+    },
     { src: "/gallery/optimized/DSC09862.webp", alt: "Henil on a day out" },
-    { src: "/gallery/optimized/DSC00053.webp", alt: "Wedding gallery photo DSC00053" },
-    { src: "/gallery/optimized/DSC00142.webp", alt: "Wedding gallery photo DSC00142" },
-    { src: "/gallery/optimized/DSC00260.webp", alt: "Wedding gallery photo DSC00260" },
-    { src: "/gallery/optimized/DSC00316.webp", alt: "Wedding gallery photo DSC00316" },
-    { src: "/gallery/optimized/DSC00431.webp", alt: "Wedding gallery photo DSC00431" },
-    { src: "/gallery/optimized/DSC00579.webp", alt: "Wedding gallery photo DSC00579" },
-    { src: "/gallery/optimized/DSC00609.webp", alt: "Wedding gallery photo DSC00609" },
-    { src: "/gallery/optimized/DSC00610.webp", alt: "Wedding gallery photo DSC00610" },
-    { src: "/gallery/optimized/DSC00626.webp", alt: "Wedding gallery photo DSC00626" },
-    { src: "/gallery/optimized/DSC00646.webp", alt: "Wedding gallery photo DSC00646" },
-    { src: "/gallery/optimized/DSC00670.webp", alt: "Wedding gallery photo DSC00670" },
-    { src: "/gallery/optimized/DSC00681.webp", alt: "Wedding gallery photo DSC00681" },
-    { src: "/gallery/optimized/DSC00686.webp", alt: "Wedding gallery photo DSC00686" },
-    { src: "/gallery/optimized/DSC00699.webp", alt: "Wedding gallery photo DSC00699" },
-    { src: "/gallery/optimized/DSC00747.webp", alt: "Wedding gallery photo DSC00747" },
-    { src: "/gallery/optimized/DSC00830.webp", alt: "Wedding gallery photo DSC00830" },
-    { src: "/gallery/optimized/DSC00854.webp", alt: "Wedding gallery photo DSC00854" },
-    { src: "/gallery/optimized/DSC00916.webp", alt: "Wedding gallery photo DSC00916" },
-    { src: "/gallery/optimized/DSC01002.webp", alt: "Wedding gallery photo DSC01002" },
-    { src: "/gallery/optimized/DSC01027.webp", alt: "Wedding gallery photo DSC01027" },
-    { src: "/gallery/optimized/DSC01071.webp", alt: "Wedding gallery photo DSC01071" },
-    { src: "/gallery/optimized/DSC01092.webp", alt: "Wedding gallery photo DSC01092" },
-    { src: "/gallery/optimized/DSC01097.webp", alt: "Wedding gallery photo DSC01097" },
-    { src: "/gallery/optimized/DSC01158.webp", alt: "Wedding gallery photo DSC01158" },
-    { src: "/gallery/optimized/DSC01219.webp", alt: "Wedding gallery photo DSC01219" },
-    { src: "/gallery/optimized/DSC02850.webp", alt: "Wedding gallery photo DSC02850" },
-    { src: "/gallery/optimized/DSC02864.webp", alt: "Wedding gallery photo DSC02864" },
-    { src: "/gallery/optimized/DSC02972.webp", alt: "Wedding gallery photo DSC02972" },
-    { src: "/gallery/optimized/DSC02974.webp", alt: "Wedding gallery photo DSC02974" },
-    { src: "/gallery/optimized/DSC02984.webp", alt: "Wedding gallery photo DSC02984" },
-    { src: "/gallery/optimized/DSC03119.webp", alt: "Wedding gallery photo DSC03119" },
-    { src: "/gallery/optimized/DSC03612.webp", alt: "Wedding gallery photo DSC03612" },
-    { src: "/gallery/optimized/DSC09957.webp", alt: "Wedding gallery photo DSC09957" },
+    {
+      src: "/gallery/optimized/DSC00053.webp",
+      alt: "Wedding gallery photo DSC00053",
+    },
+    {
+      src: "/gallery/optimized/DSC00142.webp",
+      alt: "Wedding gallery photo DSC00142",
+    },
+    {
+      src: "/gallery/optimized/DSC00260.webp",
+      alt: "Wedding gallery photo DSC00260",
+    },
+    {
+      src: "/gallery/optimized/DSC00316.webp",
+      alt: "Wedding gallery photo DSC00316",
+    },
+    {
+      src: "/gallery/optimized/DSC00431.webp",
+      alt: "Wedding gallery photo DSC00431",
+    },
+    {
+      src: "/gallery/optimized/DSC00579.webp",
+      alt: "Wedding gallery photo DSC00579",
+    },
+    {
+      src: "/gallery/optimized/DSC00609.webp",
+      alt: "Wedding gallery photo DSC00609",
+    },
+    {
+      src: "/gallery/optimized/DSC00610.webp",
+      alt: "Wedding gallery photo DSC00610",
+    },
+    {
+      src: "/gallery/optimized/DSC00626.webp",
+      alt: "Wedding gallery photo DSC00626",
+    },
+    {
+      src: "/gallery/optimized/DSC00646.webp",
+      alt: "Wedding gallery photo DSC00646",
+    },
+    {
+      src: "/gallery/optimized/DSC00670.webp",
+      alt: "Wedding gallery photo DSC00670",
+    },
+    {
+      src: "/gallery/optimized/DSC00681.webp",
+      alt: "Wedding gallery photo DSC00681",
+    },
+    {
+      src: "/gallery/optimized/DSC00686.webp",
+      alt: "Wedding gallery photo DSC00686",
+    },
+    {
+      src: "/gallery/optimized/DSC00699.webp",
+      alt: "Wedding gallery photo DSC00699",
+    },
+    {
+      src: "/gallery/optimized/DSC00747.webp",
+      alt: "Wedding gallery photo DSC00747",
+    },
+    {
+      src: "/gallery/optimized/DSC00830.webp",
+      alt: "Wedding gallery photo DSC00830",
+    },
+    {
+      src: "/gallery/optimized/DSC00854.webp",
+      alt: "Wedding gallery photo DSC00854",
+    },
+    {
+      src: "/gallery/optimized/DSC00916.webp",
+      alt: "Wedding gallery photo DSC00916",
+    },
+    {
+      src: "/gallery/optimized/DSC01002.webp",
+      alt: "Wedding gallery photo DSC01002",
+    },
+    {
+      src: "/gallery/optimized/DSC01027.webp",
+      alt: "Wedding gallery photo DSC01027",
+    },
+    {
+      src: "/gallery/optimized/DSC01071.webp",
+      alt: "Wedding gallery photo DSC01071",
+    },
+    {
+      src: "/gallery/optimized/DSC01092.webp",
+      alt: "Wedding gallery photo DSC01092",
+    },
+    {
+      src: "/gallery/optimized/DSC01097.webp",
+      alt: "Wedding gallery photo DSC01097",
+    },
+    {
+      src: "/gallery/optimized/DSC01158.webp",
+      alt: "Wedding gallery photo DSC01158",
+    },
+    {
+      src: "/gallery/optimized/DSC01219.webp",
+      alt: "Wedding gallery photo DSC01219",
+    },
+    {
+      src: "/gallery/optimized/DSC02850.webp",
+      alt: "Wedding gallery photo DSC02850",
+    },
+    {
+      src: "/gallery/optimized/DSC02864.webp",
+      alt: "Wedding gallery photo DSC02864",
+    },
+    {
+      src: "/gallery/optimized/DSC02972.webp",
+      alt: "Wedding gallery photo DSC02972",
+    },
+    {
+      src: "/gallery/optimized/DSC02974.webp",
+      alt: "Wedding gallery photo DSC02974",
+    },
+    {
+      src: "/gallery/optimized/DSC02984.webp",
+      alt: "Wedding gallery photo DSC02984",
+    },
+    {
+      src: "/gallery/optimized/DSC03119.webp",
+      alt: "Wedding gallery photo DSC03119",
+    },
+    {
+      src: "/gallery/optimized/DSC03612.webp",
+      alt: "Wedding gallery photo DSC03612",
+    },
+    {
+      src: "/gallery/optimized/DSC09957.webp",
+      alt: "Wedding gallery photo DSC09957",
+    },
   ],
   events: [
     {

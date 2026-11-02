@@ -16,7 +16,10 @@ export function OurStory() {
                 alt={moment.alt}
                 loading="lazy"
                 decoding="async"
-                style={{ objectPosition: moment.imagePosition ?? "center 30%" }}
+                style={{
+                  objectFit: moment.imageFit ?? "cover",
+                  objectPosition: moment.imagePosition ?? "center 30%",
+                }}
               />
             </figure>
             <div className="story-marker">

@@ -291,6 +291,7 @@ function Entrance() {
 function RSVP() {
   const [name, setName] = useState("");
   const [attendance, setAttendance] = useState("");
+  const [wishes, setWishes] = useState("");
   const [status, setStatus] = useState("idle");
   const [message, setMessage] = useState("");
   const requestId = useRef(null);
@@ -315,6 +316,7 @@ function RSVP() {
         );
       setName(values.name);
       setAttendance(values.attendance);
+      setWishes(values.wishes ?? "");
       setStatus("success");
       return { saved: true };
     } catch (error) {
@@ -332,12 +334,13 @@ function RSVP() {
         {
           name: "stage_wedding_rsvp",
           description:
-            "Fill the attendee name and attendance choice in the RSVP form for the guest to review and submit. Does not submit.",
+            "Fill the attendee name, attendance choice, and optional wishes in the RSVP form for the guest to review and submit. Does not submit.",
           inputSchema: {
             type: "object",
             properties: {
               name: { type: "string", minLength: 1, maxLength: 100 },
               attendance: { type: "string", enum: ["yes", "no"] },
+              wishes: { type: "string", maxLength: 1000 },
             },
             required: ["name", "attendance"],
             additionalProperties: false,
@@ -348,11 +351,15 @@ function RSVP() {
               typeof input?.name !== "string" ||
               !input.name.trim() ||
               input.name.length > 100 ||
-              !["yes", "no"].includes(input.attendance)
+              !["yes", "no"].includes(input.attendance) ||
+              (input.wishes !== undefined &&
+                (typeof input.wishes !== "string" ||
+                  input.wishes.length > 1000))
             )
               throw new Error("A name and yes/no attendance are required.");
             setName(input.name.trim());
             setAttendance(input.attendance);
+            setWishes(input.wishes?.trim() ?? "");
             setStatus("idle");
             requestId.current = null;
             document.getElementById("rsvp").scrollIntoView();
@@ -398,7 +405,7 @@ function RSVP() {
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              save({ name, attendance }).catch(() => {});
+              save({ name, attendance, wishes }).catch(() => {});
             }}
           >
             <label htmlFor="guest-name">Name of attendee</label>
@@ -430,6 +437,15 @@ function RSVP() {
                 </label>
               </RadioGroup>
             </fieldset>
+            <label htmlFor="guest-wishes">A wish for the couple (optional)</label>
+            <textarea
+              id="guest-wishes"
+              maxLength={1000}
+              placeholder="Share a note or wish with us…"
+              value={wishes}
+              onChange={(e) => setWishes(e.target.value)}
+            />
+            <p className="rsvp-wishes-count">{wishes.length}/1000</p>
             <button
               className="button submit"
               disabled={status === "saving"}

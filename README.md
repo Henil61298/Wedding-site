@@ -24,7 +24,7 @@ The venue image is a decorative villa illustration, not a photograph of Waves Cl
 
 ## RSVP
 
-The only visible fields are attendee name and yes/no attendance. Responses are saved by the included Node API to `data/rsvps.sqlite`, using Node's built-in SQLite module. Responses are not exposed by a public read endpoint. Editing a response within the same page session updates its record. New sessions are separate submissions; names are not treated as unique identities. Request IDs prevent a retry from duplicating a response.
+The RSVP asks for an attendee name, yes/no attendance, and an optional wish (up to 1,000 characters). Locally, responses are saved by the included Node API to `data/rsvps.sqlite`, using Node's built-in SQLite module. On Vercel, `api/rsvp.js` saves responses to Supabase using a server-only service-role key. Responses are not exposed by a public read endpoint. Editing a response within the same page session updates its record. New sessions are separate submissions; names are not treated as unique identities. Request IDs prevent a retry from duplicating a response.
 
 Export responses locally:
 
@@ -32,7 +32,17 @@ Export responses locally:
 npm run export:rsvps --silent > rsvps.csv
 ```
 
-Keep the database private and back it up. `data/` is ignored by Git and excluded from the supplied archive.
+For local development, keep the SQLite database private and back it up. `data/` is ignored by Git and excluded from the supplied archive. The SQLite API adds the wishes column to existing RSVP databases automatically. CSV exports include the wishes.
+
+### Connect Supabase to Vercel
+
+1. Create a Supabase project and open its SQL Editor.
+2. Run [`supabase/schema.sql`](./supabase/schema.sql) to create or update the private RSVP table, including its wishes column. Row-level security is enabled, and public `anon`/`authenticated` roles have no table access.
+3. In the Supabase project settings, copy the **Project URL** and **service_role** API key. In Vercel, add them as `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` environment variables for Production (and Preview if desired). Never use the service-role key in frontend code or commit it.
+4. Redeploy the Vercel project. The form posts to the same-origin `/api/rsvp` function, which upserts the RSVP without exposing a read endpoint.
+5. To view or export replies, use the Supabase Table Editor for `public.rsvps` and its CSV export. Keep access to the Supabase dashboard restricted to the hosts.
+
+Local `npm run dev` continues to use SQLite. To test the live Supabase integration, submit a test response on a Vercel Preview deployment and then remove it from the Supabase Table Editor.
 
 ## Build and host later
 
@@ -41,9 +51,9 @@ npm run build
 npm start
 ```
 
-`npm start` serves `dist/` and `/api/rsvp` together on port 3001. For hosting, set `HOST=0.0.0.0`, `PORT` as required by your provider, and `RSVP_DB_PATH` to a persistent writable disk. These are process environment variables; `.env.example` documents them. The server does not automatically load `.env` files. Put the server behind HTTPS. The SQLite file requires persistent storage: don't use an ephemeral serverless filesystem.
+`npm start` serves `dist/` and the local SQLite `/api/rsvp` together on port 3001. For the Vercel deployment, the `api/rsvp.js` function uses Supabase instead; configure its environment variables as described above. `.env.example` documents the variable names. Never commit actual credentials.
 
-You can host `dist/` on a static host, but RSVP then needs a separately hosted backend and a same-origin `/api/rsvp` proxy. Static-only hosting cannot save responses by itself. `npm run preview` is a frontend-only preview; use `npm run dev` or `npm start` to test RSVP.
+`npm run preview` is a frontend-only preview; use `npm run dev` or `npm start` to test the local SQLite RSVP flow.
 
 ## Local videos and music
 
@@ -74,7 +84,7 @@ npm test
 npm run build
 ```
 
-The RSVP test verifies persistence across reopening the database, safe retries, response updates, duplicate attendee names, and invalid-input rejection. The local UI was checked on desktop and at a 390px mobile width, with a successful test RSVP submission.
+The RSVP tests verify local database persistence, safe retries, response updates, duplicate attendee names, and Vercel endpoint validation/upserts.
 
 ## Automatic dance video
 
@@ -84,6 +94,6 @@ Gallery: add extra photos to public/gallery and list them in wedding.gallery in 
 
 ## Vercel deployment from GitHub
 
-Import this repository into Vercel with the Vite preset and Node.js 24.x. The root `vercel.json` sets `npm run build` and `dist`. This deploys the frontend only.
+Import this repository into Vercel with the Vite preset and Node.js 24.x. The root `vercel.json` sets `npm run build` and `dist`; Vercel also deploys the `/api/rsvp` function from `api/rsvp.js`. Configure the Supabase project and Vercel environment variables above before accepting real replies.
 
-**RSVP launch requirement:** the included `server/` API uses a local SQLite database and is not deployed by Vercel's static Vite build. Connect a persistent hosted RSVP backend before sending invitations; a frontend-only deployment cannot save responses. Never commit attendee databases or `.env` secrets.
+Never commit attendee databases or `.env` secrets.
