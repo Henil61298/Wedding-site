@@ -50,7 +50,7 @@ test("Vercel RSVP endpoint upserts a validated response to Supabase", async () =
 
     assert.equal(res.statusCode, 200);
     assert.deepEqual(res.body, { saved: true });
-    assert.equal(request[0], "https://project.supabase.co/rest/v1/rsvps?on_conflict=id");
+    assert.equal(request[0], "https://project.supabase.co/rest/v1/allfunc_rsvps?on_conflict=id");
     assert.equal(request[1].headers.apikey, "server-only-test-key");
     assert.equal(request[1].headers.Authorization, "Bearer server-only-test-key");
     assert.equal(request[1].headers.Prefer, "resolution=merge-duplicates,return=minimal");

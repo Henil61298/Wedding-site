@@ -65,16 +65,19 @@ export default async function handler(req, res) {
   }
 
   try {
-    const response = await fetch(`${supabaseUrl}/rest/v1/rsvps?on_conflict=id`, {
-      method: "POST",
-      headers: {
-        apikey: serviceRoleKey,
-        Authorization: `Bearer ${serviceRoleKey}`,
-        "Content-Type": "application/json",
-        Prefer: "resolution=merge-duplicates,return=minimal",
+    const response = await fetch(
+      `${supabaseUrl}/rest/v1/allfunc_rsvps?on_conflict=id`,
+      {
+        method: "POST",
+        headers: {
+          apikey: serviceRoleKey,
+          Authorization: `Bearer ${serviceRoleKey}`,
+          "Content-Type": "application/json",
+          Prefer: "resolution=merge-duplicates,return=minimal",
+        },
+        body: JSON.stringify(rsvp),
       },
-      body: JSON.stringify(rsvp),
-    });
+    );
     if (!response.ok) {
       console.error(`Supabase RSVP request failed with status ${response.status}.`);
       return json(res, 503, {
