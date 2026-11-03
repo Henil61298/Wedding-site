@@ -588,6 +588,59 @@ legend {
   padding: 28px 0;
   color: #536747;
 }
+.rsvp-mail-flight {
+  position: relative;
+  height: 145px;
+  margin-bottom: 8px;
+  overflow: visible;
+}
+.rsvp-heart-mail {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(210px, 72vw);
+  height: auto;
+  overflow: visible;
+  transform: translate(-50%, -50%);
+  animation: rsvp-mail-flight 2.8s cubic-bezier(0.42, 0, 0.7, 1) both;
+}
+.rsvp-mail-wing {
+  transform-box: fill-box;
+  animation: rsvp-wing-flap 0.32s ease-in-out infinite alternate;
+}
+.rsvp-mail-wing-left {
+  transform-origin: right center;
+}
+.rsvp-mail-wing-right {
+  transform-origin: left center;
+  animation-delay: -0.16s;
+}
+@keyframes rsvp-mail-flight {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 32px) scale(0.52) rotate(-8deg);
+  }
+  12% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1) rotate(0);
+  }
+  35% {
+    opacity: 1;
+    transform: translate(-50%, -65%) scale(1.04) rotate(-4deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% + 170px), -220px) scale(0.72) rotate(18deg);
+  }
+}
+@keyframes rsvp-wing-flap {
+  from {
+    rotate: -9deg;
+  }
+  to {
+    rotate: 12deg;
+  }
+}
 .rsvp-success h3 {
   margin: 15px 0;
 }

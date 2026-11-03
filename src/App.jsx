@@ -390,7 +390,72 @@ function RSVP() {
         <p>Your presence will make our celebration complete.</p>
         {status === "success" ? (
           <div className="rsvp-success" role="status">
-            <Check size={28} />
+            <div className="rsvp-mail-flight" aria-hidden="true">
+              <svg
+                className="rsvp-heart-mail"
+                viewBox="0 0 220 150"
+                fill="none"
+              >
+                <g className="rsvp-mail-wing rsvp-mail-wing-left">
+                  <path
+                    d="M75 82C53 71 33 53 23 30C43 35 61 46 78 63C58 52 43 48 31 48C45 61 58 71 76 77Z"
+                    fill="#F3D9CF"
+                    stroke="#B77A73"
+                    strokeWidth="2"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M34 40C46 45 56 52 67 62M42 54L59 65"
+                    stroke="#B77A73"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                </g>
+                <g className="rsvp-mail-wing rsvp-mail-wing-right">
+                  <path
+                    d="M145 82C167 71 187 53 197 30C177 35 159 46 142 63C162 52 177 48 189 48C175 61 162 71 144 77Z"
+                    fill="#F3D9CF"
+                    stroke="#B77A73"
+                    strokeWidth="2"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M186 40C174 45 164 52 153 62M178 54L161 65"
+                    stroke="#B77A73"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                </g>
+                <path
+                  d="M110 128C96 116 62 94 62 68C62 46 88 39 110 61C132 39 158 46 158 68C158 94 124 116 110 128Z"
+                  fill="#B94751"
+                  stroke="#8E343E"
+                  strokeWidth="2"
+                />
+                <path
+                  d="M83 64H137V94C137 98 134 101 130 101H90C86 101 83 98 83 94V64Z"
+                  fill="#FFF9EE"
+                />
+                <path
+                  d="M84 67L110 87L136 67"
+                  stroke="#B77A73"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M85 96L102 82M135 96L118 82"
+                  stroke="#B77A73"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <path
+                  d="M110 106C108 104 103 101 103 97C103 94 107 93 110 96C113 93 117 94 117 97C117 101 112 104 110 106Z"
+                  fill="#D99C82"
+                />
+              </svg>
+            </div>
             <h3>Thank you, {name}.</h3>
             <p>
               {attendance === "yes"
